@@ -1,11 +1,12 @@
-Background
+## Background
 
-We have been facing recurring issues when attempting to set up the QGC build for Android, despite strictly following to the official build documentation. This report details the challenges encountered, the troubleshooting steps undertaken, and the solutions implemented to resolve these issues.
+We have been facing recurring issues when attempting to set up the QGC build for Android, despite strictly following the official build documentation. This report details the challenges encountered, the troubleshooting steps undertaken, and the solutions implemented to resolve these issues.
 
-Problem Statement
+## Problem Statement
 
 Despite following the build documentation precisely, the QGC build process on Android consistently resulted in errors that were difficult to diagnose. The primary error encountered was as follows:
 
+```
 FAILURE: Build failed with an exception.
 
 What went wrong:
@@ -20,20 +21,23 @@ Try:
 Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
 Task :desugarDebugFileDependencies
 Run with --scan to get full insights.
-Get more help at <https://help.gradle.org/.>
+Get more help at <https://help.gradle.org/>.
 
-There were few other random errors which leaded us to nothing, only making it harder to comprehend.
+```
 
-Investigation and Findings
+There were a few other random errors that led to dead ends, making it harder to comprehend the root cause.
 
-Initial troubleshooting efforts involved inquiring on various QGC community platforms to understand the root cause of the errors. Through extensive trial and error, it was discovered that the stable variant of Qt 6.6.3 was compatible with Java Development Kit (JDK) versions 17, 19, and 20. Adopting JDK@17 significantly reduced the number of build errors.
+## Investigation and Findings
 
-Further investigation revealed that the outdated instructions in the official documentation were misleading. The recommendation of JDK@11 was suitable for Qt 5.15.2. However, with the transition from Qt 5 to Qt 6, the appropriate JDK version should have been updated to JDK@17 for Qt 6.6.3, particularly for Android 13 and later versions. Additionally, the specific version of the Native Development Kit (NDK) used also played a crucial role. The compatible NDK version for our setup was 25.1.8937393.
+Initial troubleshooting efforts involved inquiring on various QGC community platforms to understand the root cause of the errors. Through extensive trial and error, it was discovered that the stable variant of Qt 6.6.3 was compatible with Java Development Kit (JDK) versions 17, 19, and 20. Adopting JDK 17 significantly reduced the number of build errors.
 
-Correct Configuration
+Further investigation revealed that the outdated instructions in the official documentation were misleading. The recommendation of JDK 11 was suitable for Qt 5.15.2. However, with the transition from Qt 5 to Qt 6, the appropriate JDK version should have been updated to JDK 17 for Qt 6.6.3, particularly for Android 13 and later versions. Additionally, the specific version of the Native Development Kit (NDK) used also played a crucial role. The compatible NDK version for our setup was 25.1.8937393.
+
+## Correct Configuration
 
 The successful configuration that resolved the build issues is as follows:
 
+```yaml
 name: Setup Java Environment
 uses: actions/setup-java@v4
 with:
@@ -57,15 +61,14 @@ with:
     arch: android_arm64_v8a
     dir: ${{ runner.temp }}
     modules: qtcharts qtlocation qtpositioning qtspeech qt5compat qtmultimedia qtserialport qtimageformats qtshadertools qtconnectivity qtquick3d qtsensors
+```
 
-Resolution and Contribution
+## Resolution and Contribution
 
-Upon identifying the issues and correcting the configuration, we submitted a Pull Request (PR) to the QGC GitHub repository. The PR was reviewed and merged into the master branch by the project owners, acknowledging the necessity of these updates for general users to build successfully. The approved PR can be found below;
+Upon identifying the issues and correcting the configuration, we submitted a Pull Request (PR) to the QGC GitHub repository. The PR was reviewed and merged into the master branch by the project owners, acknowledging the necessity of these updates for general users to build successfully. The approved PR can be found below:
 
-https://github.com/mavlink/qgroundcontrol/pull/11753
+[QGC GitHub PR #11753](https://github.com/mavlink/qgroundcontrol/pull/11753)
 
-.
-
-Conclusion
+## Conclusion
 
 The primary cause of the build errors was the outdated configuration instructions in the official QGC documentation. Updating the JDK version to 17 and ensuring compatibility with specific NDK versions resolved the issues. The updated configuration has been successfully merged into the QGC master branch, improving the build process for the entire community.
