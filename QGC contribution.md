@@ -1,3 +1,5 @@
+[QGC GitHub PR #11753](https://github.com/mavlink/qgroundcontrol/pull/11753)
+
 ## Background
 
 We have been facing recurring issues when attempting to set up the QGC build for Android, despite strictly following the official build documentation. This report details the challenges encountered, the troubleshooting steps undertaken, and the solutions implemented to resolve these issues.
