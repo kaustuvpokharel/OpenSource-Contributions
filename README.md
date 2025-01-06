@@ -1,5 +1,5 @@
-# OpenSource-Contributions
+# Open Source Contributions
 
-#1. QGC Contribution
-!()[QGC contribution.md]
+## List of Contributions
 
+1. [QGC Contribution](QGC%20contribution.md)
